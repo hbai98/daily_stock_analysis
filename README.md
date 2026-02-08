@@ -34,6 +34,7 @@
 | 分析 | 多维度分析 | 技术面 + 筹码分布 + 舆情情报 + 实时行情 |
 | 市场 | 全球市场 | 支持 A股、港股、美股 |
 | 复盘 | 大盘复盘 | 每日市场概览、板块涨跌、北向资金 |
+| 回测 | AI 回测验证 | 自动评估历史分析准确率，方向胜率、止盈止损命中率 |
 | 推送 | 多渠道通知 | 企业微信、飞书、Telegram、钉钉、邮件、Pushover |
 | 自动化 | 定时运行 | GitHub Actions 定时执行，无需服务器 |
 
@@ -43,7 +44,7 @@
 |------|------|
 | AI 模型 | Gemini（免费）、OpenAI 兼容、DeepSeek、通义千问、Claude、Ollama |
 | 行情数据 | AkShare、Tushare、Pytdx、Baostock、YFinance |
-| 新闻搜索 | Tavily、SerpAPI、Bocha |
+| 新闻搜索 | Tavily、SerpAPI、Bocha、Brave |
 
 ### 内置交易纪律
 
@@ -94,6 +95,7 @@
 | `EMAIL_SENDER` | 发件人邮箱（如 `xxx@qq.com`） | 可选 |
 | `EMAIL_PASSWORD` | 邮箱授权码（非登录密码） | 可选 |
 | `EMAIL_RECEIVERS` | 收件人邮箱（多个用逗号分隔，留空则发给自己） | 可选 |
+| `EMAIL_SENDER_NAME` | 邮件发件人显示名称（默认：daily_stock_analysis股票分析助手） | 可选 |
 | `PUSHPLUS_TOKEN` | PushPlus Token（[获取地址](https://www.pushplus.plus)，国内推送服务） | 可选 |
 | `SERVERCHAN3_SENDKEY` | Server酱³ Sendkey（[获取地址](https://sc3.ft07.com/)，手机APP推送服务） | 可选 |
 | `CUSTOM_WEBHOOK_URLS` | 自定义 Webhook（支持钉钉等，多个用逗号分隔） | 可选 |
@@ -114,6 +116,7 @@
 | `TAVILY_API_KEYS` | [Tavily](https://tavily.com/) 搜索 API（新闻搜索） | 推荐 |
 | `SERPAPI_API_KEYS` | [SerpAPI](https://serpapi.com/baidu-search-api?utm_source=github_daily_stock_analysis) 全渠道搜索 | 可选 |
 | `BOCHA_API_KEYS` | [博查搜索](https://open.bocha.cn/) Web Search API（中文搜索优化，支持AI摘要，多个key用逗号分隔） | 可选 |
+| `BRAVE_API_KEYS` | [Brave Search](https://brave.com/search/api/) API（隐私优先，美股优化，多个key用逗号分隔） | 可选 |
 | `TUSHARE_TOKEN` | [Tushare Pro](https://tushare.pro/weborder/#/login?reg=834638 ) Token | 可选 |
 | `WECHAT_MSG_TYPE` | 企微消息类型，默认 markdown，支持配置 text 类型，发送纯 markdown 文本 | 可选 |
 
@@ -193,16 +196,30 @@ python main.py
 > 📖 完整环境变量、定时任务配置请参考 [完整配置指南](docs/full-guide.md)
 
 
-## 🖥️ 本地 WebUI（可选）
+## 🖥️ Web 界面
 
-```bash
-python main.py --webui       # 启动 WebUI + 执行分析
-python main.py --webui-only  # 仅启动 WebUI
-```
+![img.png](sources/fastapi_server.png)
 
-访问 `http://127.0.0.1:8000` 可进行配置管理、触发分析、查看任务状态。
+包含完整的配置管理、任务监控和手动分析功能。
 
-> 详细说明请参考 [完整指南 - WebUI](docs/full-guide.md#本地-webui-管理界面)
+### 启动方式
+
+1. **编译前端** (首次运行需要)
+   ```bash
+   cd ./apps/dsa-web
+   npm install && npm run build
+   cd ../..
+   ```
+
+2. **启动服务**
+   ```bash
+   python main.py --webui       # 启动 Web 界面 + 执行定时分析
+   python main.py --webui-only  # 仅启动 Web 界面
+   ```
+
+访问 `http://127.0.0.1:8000` 即可使用。
+
+> 也可以使用 `python main.py --serve` (等效命令)
 
 ## 🗺️ Roadmap
 
